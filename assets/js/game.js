@@ -80,6 +80,12 @@ var startGame = function() {
         
             // pass the pickedEnemyName variable's value into the fight function, where it will assume the name of the enemyName parameter
             fight(pickedEnemyName);
+            if (i < enemyNames.length - 1 && playerHealth > 0) {
+                var storeConfirm = window.confirm("The fight is over, visit the store before the next round?");
+                if (storeConfirm) {
+                shop();
+            }
+            }
         } else {
             window.alert("You have lost your robot in battle! Game Over!");
             break;
@@ -108,5 +114,47 @@ var endGame = function() {
 
 };
 
-debugger;
+var shop = function() {
+    var shopOptionPrompt = window.prompt("Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter one: 'REFILL', 'UPGRADE', or 'LEAVE' to make a choice.");
+
+    // switch to carry out action
+    switch (shopOptionPrompt) {
+        case "REFILL": 
+        case "refill":
+            if (playerMoney >= 7) {
+                window.alert("refilling player's health by 20 for 7 dollars.");
+                // increase health and decrease money
+                playerHealth = playerHealth + 20;
+                playerMoney = playerMoney - 7;
+            } else {
+                window.alert("You do not have enough money!");
+            }
+            break;
+        
+        case "UPGRADE":
+        case "upgrade":
+            if (playerMoney >= 7) {
+                window.alert("Upgrading player's attack by 6 for 7 dollars.");
+                // increase player attack and decrease money
+                playerAttack = playerAttack + 6;
+                playerMonday = playerMoney - 7;
+            } else {
+                window.alert("You do not have enough money!");
+            }
+            break;
+        case "LEAVE":
+        case "leave":
+            window.alert("Leaving the store.");
+            // do nothing so function ends.
+            break;
+        default:
+            window.alert("You did not pick a valid option. Try again.");
+            // call shop function again to force player to pick a valid option
+            shop();
+            break;
+    }
+
+}
+
+// debugger;
 startGame();
