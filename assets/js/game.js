@@ -4,23 +4,31 @@
 //      * Defeat each enemy-robot.
 // "Lose" - Player robot's health is zero or less.
 
+var fightOrSkip = function() {
+    var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
+    // conditional recursive function call
+    promptFight = promptFight.toLowerCase();
 
-var fight = function(enemy) {
-    // window.alert("Welcome to Robot Gladiators!");
-    while (playerInfo.health > 0 && enemy.health > 0) {
-        // Ask player if they want to fight or run.
-        var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
-        if (promptFight === "skip" || promptFight === "SKIP") {
-            // confirm player wants to skip.
-            var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+    if (promptFight === "skip") {
+        var confirmSkip = window.confirm("Are you sure you'd like to quit?");
             // if yes, leave fight.
             if (confirmSkip) {
                 window.alert(playerInfo.name + " has chosen to skip the fight! Goodbye!");
                 playerInfo.money = Math.max(0, playerInfo.money - 10);    
-                console.log("playerMoney" , playerInfo.money);
-                break;
-            }            
+                return true;
+            }
         }
+    return false;
+}
+
+
+var fight = function(enemy) {
+    // window.alert("Welcome to Robot Gladiators!");
+    while (playerInfo.health > 0 && enemy.health > 0) {
+        if (fightOrSkip()) {
+        // if true, leave fight by breaking loop
+        break;
+    }
         // generate random damage value based on players attack power
         var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
         enemy.health = Math.max(0, enemy.health - damage);
